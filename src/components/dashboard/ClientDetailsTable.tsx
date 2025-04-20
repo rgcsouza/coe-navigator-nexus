@@ -1,6 +1,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { getStatusBadge } from "@/utils/statusHelpers";
 
 interface Client {
   name: string;
@@ -12,10 +13,9 @@ interface Client {
 
 interface ClientDetailsTableProps {
   clients: Client[];
-  getStatusBadge: (status: string) => string;
 }
 
-const ClientDetailsTable = ({ clients, getStatusBadge }: ClientDetailsTableProps) => {
+const ClientDetailsTable = ({ clients }: ClientDetailsTableProps) => {
   return (
     <div className="bg-muted/30 p-4">
       <h4 className="font-medium mb-2">Detalhes dos Clientes</h4>

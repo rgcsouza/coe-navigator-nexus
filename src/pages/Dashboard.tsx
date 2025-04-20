@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import StatsCard from "@/components/dashboard/StatsCard";
 import AggregatedOperationsTable from "@/components/dashboard/AggregatedOperationsTable";
 import { Operation, getOfferTypeLabel, getOfferTypeStyles } from "@/types/operations";
+import { getStatusBadge } from "@/utils/statusHelpers";
 
 // Mock data for dashboard stats
 const dashboardStats = [
@@ -87,19 +88,6 @@ const aggregatedOperations: Operation[] = [
   },
 ];
 
-const getStatusBadge = (status: string) => {
-  const statusStyles = {
-    "Processado": "bg-green-100 text-green-800",
-    "Em análise": "bg-blue-100 text-blue-800",
-    "Em edição": "bg-amber-100 text-amber-800",
-    "Enviado": "bg-purple-100 text-purple-800",
-    "Rejeitado": "bg-red-100 text-red-800",
-    "Cancelado": "bg-gray-100 text-gray-800"
-  };
-  
-  return statusStyles[status as keyof typeof statusStyles] || "bg-gray-100 text-gray-800";
-};
-
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -163,7 +151,6 @@ const Dashboard = () => {
               onViewOperationDetails={handleViewOperationDetails}
               onConcludeOperation={handleConcludeOperation}
               onCancelOperation={handleCancelOperation}
-              getStatusBadge={getStatusBadge}
               getOfferTypeStyles={getOfferTypeStyles}
             />
           </div>

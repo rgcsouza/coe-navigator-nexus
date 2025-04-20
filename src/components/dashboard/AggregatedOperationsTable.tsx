@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Eye, FileText, Check, X } from "lucide-react";
 import ClientDetailsTable from "./ClientDetailsTable";
 import { Operation, getOfferTypeLabel } from "@/types/operations";
+import { getStatusBadge } from "@/utils/statusHelpers";
 
 interface AggregatedOperationsTableProps {
   operations: Operation[];
@@ -13,7 +15,6 @@ interface AggregatedOperationsTableProps {
   onViewOperationDetails: (operationId: string) => void;
   onConcludeOperation: (operationId: string) => void;
   onCancelOperation: (operationId: string) => void;
-  getStatusBadge: (status: string) => string;
   getOfferTypeStyles: (offerType: Operation['offerType']) => string;
 }
 
@@ -24,7 +25,6 @@ const AggregatedOperationsTable = ({
   onViewOperationDetails,
   onConcludeOperation,
   onCancelOperation,
-  getStatusBadge,
   getOfferTypeStyles,
 }: AggregatedOperationsTableProps) => {
   return (
@@ -110,7 +110,7 @@ const AggregatedOperationsTable = ({
             {expandedOperation === op.id && (
               <TableRow>
                 <TableCell colSpan={10} className="p-0">
-                  <ClientDetailsTable clients={op.clients} getStatusBadge={getStatusBadge} />
+                  <ClientDetailsTable clients={op.clients} />
                 </TableCell>
               </TableRow>
             )}
