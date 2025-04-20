@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -8,15 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Search, Filter, Plus, ArrowDown, ArrowUp, File, Settings, Eye } from "lucide-react";
+import { OperationsHeader } from "@/components/operations/OperationsHeader";
+import { OperationsTable } from "@/components/operations/OperationsTable";
+import { useOperationsSort } from "@/hooks/useOperationsSort";
 
 const mockOperations = [
   { 
@@ -82,7 +75,6 @@ const mockOperations = [
 ];
 
 const Operations = () => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState("desc");
@@ -96,42 +88,15 @@ const Operations = () => {
     }
   };
 
-  const sortedOperations = [...mockOperations].sort((a, b) => {
-    if (sortField === "value") {
-      const valueA = parseFloat(a.value.replace(/[^0-9,-]/g, "").replace(",", "."));
-      const valueB = parseFloat(b.value.replace(/[^0-9,-]/g, "").replace(",", "."));
-      return sortDirection === "asc" ? valueA - valueB : valueB - valueA;
-    } else if (sortField === "date") {
-      const dateA = new Date(a.date.split("-").reverse().join("-"));
-      const dateB = new Date(b.date.split("-").reverse().join("-"));
-      return sortDirection === "asc" ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
-    } else {
-      const fieldA = a[sortField as keyof typeof a];
-      const fieldB = b[sortField as keyof typeof b];
-      return sortDirection === "asc" 
-        ? fieldA.localeCompare(fieldB) 
-        : fieldB.localeCompare(fieldA);
-    }
-  });
-
-  const filteredOperations = sortedOperations.filter(op => 
+  const filteredOperations = mockOperations.filter(op => 
     op.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
     op.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
     op.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
     op.issuer.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const SortIcon = ({ field }: { field: string }) => {
-    if (sortField !== field) return null;
-    return sortDirection === "asc" ? 
-      <ArrowUp className="w-3 h-3 ml-1" /> : 
-      <ArrowDown className="w-3 h-3 ml-1" />;
-  };
+  const sortedOperations = useOperationsSort(filteredOperations, sortField, sortDirection);
   
-  const handleViewOperationDetails = (operationId: string) => {
-    navigate(`/operation/${operationId}`);
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -149,35 +114,10 @@ const Operations = () => {
             <TabsTrigger value="completed">Finalizadas</TabsTrigger>
           </TabsList>
           
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <div className="relative w-full sm:w-auto">
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar operações..."
-                className="pl-8 w-full"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Filter className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Todos os tipos</DropdownMenuItem>
-                <DropdownMenuItem>Autocall</DropdownMenuItem>
-                <DropdownMenuItem>Capital Protegido</DropdownMenuItem>
-                <DropdownMenuItem>Duplo Índice</DropdownMenuItem>
-                <DropdownMenuItem>Call Digital</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Nova Operação</span>
-            </Button>
-          </div>
+          <OperationsHeader 
+            searchTerm={searchTerm} 
+            onSearchChange={setSearchTerm} 
+          />
         </div>
 
         <TabsContent value="all" className="m-0">
@@ -190,92 +130,13 @@ const Operations = () => {
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-muted/50">
-                    <tr>
-                      <th 
-                        className="text-left py-3 px-4 font-medium cursor-pointer"
-                        onClick={() => handleSort("id")}
-                      >
-                        <div className="flex items-center">
-                          ID <SortIcon field="id" />
-                        </div>
-                      </th>
-                      <th 
-                        className="text-left py-3 px-4 font-medium cursor-pointer"
-                        onClick={() => handleSort("type")}
-                      >
-                        <div className="flex items-center">
-                          Tipo <SortIcon field="type" />
-                        </div>
-                      </th>
-                      <th 
-                        className="text-left py-3 px-4 font-medium cursor-pointer"
-                        onClick={() => handleSort("asset")}
-                      >
-                        <div className="flex items-center">
-                          Ativo <SortIcon field="asset" />
-                        </div>
-                      </th>
-                      <th 
-                        className="text-left py-3 px-4 font-medium cursor-pointer"
-                        onClick={() => handleSort("protection")}
-                      >
-                        <div className="flex items-center">
-                          Proteção <SortIcon field="protection" />
-                        </div>
-                      </th>
-                      <th 
-                        className="text-left py-3 px-4 font-medium cursor-pointer"
-                        onClick={() => handleSort("date")}
-                      >
-                        <div className="flex items-center">
-                          Data <SortIcon field="date" />
-                        </div>
-                      </th>
-                      <th 
-                        className="text-left py-3 px-4 font-medium cursor-pointer"
-                        onClick={() => handleSort("value")}
-                      >
-                        <div className="flex items-center">
-                          Valor <SortIcon field="value" />
-                        </div>
-                      </th>
-                      <th className="text-center py-3 px-4 font-medium">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredOperations.map((op, i) => (
-                      <tr key={i} className="border-t hover:bg-muted/50">
-                        <td className="py-3 px-4 text-primary">{op.id}</td>
-                        <td className="py-3 px-4">{op.type}</td>
-                        <td className="py-3 px-4">{op.asset}</td>
-                        <td className="py-3 px-4">{op.protection}</td>
-                        <td className="py-3 px-4">{op.date}</td>
-                        <td className="py-3 px-4 font-medium">{op.value}</td>
-                        <td className="py-2 px-4">
-                          <div className="flex justify-center gap-2">
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 w-8 p-0"
-                              onClick={() => handleViewOperationDetails(op.id)}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                              <File className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                              <Settings className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {filteredOperations.length === 0 && (
+                <OperationsTable 
+                  operations={sortedOperations}
+                  sortField={sortField}
+                  sortDirection={sortDirection}
+                  onSort={handleSort}
+                />
+                {sortedOperations.length === 0 && (
                   <div className="py-8 text-center text-muted-foreground">
                     Nenhuma operação encontrada para os filtros aplicados
                   </div>
@@ -311,46 +172,12 @@ const Operations = () => {
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-muted/50">
-                    <tr>
-                      <th className="text-left py-3 px-4 font-medium">ID</th>
-                      <th className="text-left py-3 px-4 font-medium">Tipo</th>
-                      <th className="text-left py-3 px-4 font-medium">Ativo</th>
-                      <th className="text-left py-3 px-4 font-medium">Proteção</th>
-                      <th className="text-left py-3 px-4 font-medium">Data</th>
-                      <th className="text-left py-3 px-4 font-medium">Valor</th>
-                      <th className="text-center py-3 px-4 font-medium">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredOperations.map((op, i) => (
-                      <tr key={i} className="border-t hover:bg-muted/50">
-                        <td className="py-3 px-4 text-primary">{op.id}</td>
-                        <td className="py-3 px-4">{op.type}</td>
-                        <td className="py-3 px-4">{op.asset}</td>
-                        <td className="py-3 px-4">{op.protection}</td>
-                        <td className="py-3 px-4">{op.date}</td>
-                        <td className="py-3 px-4 font-medium">{op.value}</td>
-                        <td className="py-2 px-4">
-                          <div className="flex justify-center gap-2">
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="h-8 w-8 p-0" 
-                              onClick={() => handleViewOperationDetails(op.id)}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                              <File className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <OperationsTable 
+                  operations={sortedOperations}
+                  sortField={sortField}
+                  sortDirection={sortDirection}
+                  onSort={handleSort}
+                />
               </div>
             </CardContent>
           </Card>
