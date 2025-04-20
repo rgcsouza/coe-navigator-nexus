@@ -7,7 +7,7 @@ import { Calendar, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import StatsCard from "@/components/dashboard/StatsCard";
 import AggregatedOperationsTable from "@/components/dashboard/AggregatedOperationsTable";
-import { Operation } from "@/types/operations";
+import { Operation, getOfferTypeLabel, getOfferTypeStyles } from "@/types/operations";
 
 // Mock data for dashboard stats
 const dashboardStats = [
@@ -164,6 +164,7 @@ const Dashboard = () => {
               onConcludeOperation={handleConcludeOperation}
               onCancelOperation={handleCancelOperation}
               getStatusBadge={getStatusBadge}
+              getOfferTypeStyles={getOfferTypeStyles}
             />
           </div>
         </CardContent>

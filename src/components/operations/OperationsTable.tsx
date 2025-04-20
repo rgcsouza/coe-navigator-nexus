@@ -1,22 +1,16 @@
-
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Eye, File, Settings } from "lucide-react";
-
-interface Operation {
-  id: string;
-  type: string;
-  asset: string;
-  protection: string;
-  date: string;
-  value: string;
-}
+import { Operation } from "@/types/operations";
 
 interface OperationsTableProps {
   operations: Operation[];
   sortField: string;
   sortDirection: string;
   onSort: (field: string) => void;
+  getOfferTypeLabel: (offerType: Operation['offerType']) => string;
+  getOfferTypeStyles: (offerType: Operation['offerType']) => string;
 }
 
 export const OperationsTable = ({
@@ -24,6 +18,8 @@ export const OperationsTable = ({
   sortField,
   sortDirection,
   onSort,
+  getOfferTypeLabel,
+  getOfferTypeStyles,
 }: OperationsTableProps) => {
   const navigate = useNavigate();
 
@@ -90,6 +86,14 @@ export const OperationsTable = ({
               Valor <SortIcon field="value" />
             </div>
           </th>
+          <th 
+            className="text-left py-3 px-4 font-medium cursor-pointer"
+            onClick={() => onSort("offerType")}
+          >
+            <div className="flex items-center">
+              Tipo de Oferta <SortIcon field="offerType" />
+            </div>
+          </th>
           <th className="text-center py-3 px-4 font-medium">Ações</th>
         </tr>
       </thead>
@@ -102,6 +106,13 @@ export const OperationsTable = ({
             <td className="py-3 px-4">{op.protection}</td>
             <td className="py-3 px-4">{op.date}</td>
             <td className="py-3 px-4 font-medium">{op.value}</td>
+            <td className="py-3 px-4">
+              <Badge 
+                className={`${getOfferTypeStyles(op.offerType)} font-medium`}
+              >
+                {getOfferTypeLabel(op.offerType)}
+              </Badge>
+            </td>
             <td className="py-2 px-4">
               <div className="flex justify-center gap-2">
                 <Button 
@@ -126,4 +137,3 @@ export const OperationsTable = ({
     </table>
   );
 };
-

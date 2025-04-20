@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +14,7 @@ interface AggregatedOperationsTableProps {
   onConcludeOperation: (operationId: string) => void;
   onCancelOperation: (operationId: string) => void;
   getStatusBadge: (status: string) => string;
+  getOfferTypeStyles: (offerType: Operation['offerType']) => string;
 }
 
 const AggregatedOperationsTable = ({
@@ -25,6 +25,7 @@ const AggregatedOperationsTable = ({
   onConcludeOperation,
   onCancelOperation,
   getStatusBadge,
+  getOfferTypeStyles,
 }: AggregatedOperationsTableProps) => {
   return (
     <Table>
@@ -49,7 +50,13 @@ const AggregatedOperationsTable = ({
               <TableCell className="font-medium text-primary">{op.id}</TableCell>
               <TableCell>{op.type}</TableCell>
               <TableCell>{op.asset}</TableCell>
-              <TableCell>{getOfferTypeLabel(op.offerType)}</TableCell>
+              <TableCell>
+                <Badge 
+                  className={`${getOfferTypeStyles(op.offerType)} font-medium`}
+                >
+                  {getOfferTypeLabel(op.offerType)}
+                </Badge>
+              </TableCell>
               <TableCell>{op.protection}</TableCell>
               <TableCell>
                 <Badge variant="outline" className={getStatusBadge(op.status)}>

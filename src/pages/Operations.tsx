@@ -10,13 +10,14 @@ import {
 import { OperationsHeader } from "@/components/operations/OperationsHeader";
 import { OperationsTable } from "@/components/operations/OperationsTable";
 import { useOperationsSort } from "@/hooks/useOperationsSort";
+import { getOfferTypeLabel, getOfferTypeStyles } from "@/types/operations";
 
 const mockOperations = [
   { 
     id: "COE-2023-05-01", 
     type: "Autocall", 
     asset: "IBOVESPA", 
-    issuer: "Banco ABC", 
+    offerType: "d0", 
     status: "Concluída", 
     date: "2023-05-01", 
     value: "R$ 1.250.000,00",
@@ -135,6 +136,8 @@ const Operations = () => {
                   sortField={sortField}
                   sortDirection={sortDirection}
                   onSort={handleSort}
+                  getOfferTypeLabel={getOfferTypeLabel}
+                  getOfferTypeStyles={getOfferTypeStyles}
                 />
                 {sortedOperations.length === 0 && (
                   <div className="py-8 text-center text-muted-foreground">
@@ -177,6 +180,8 @@ const Operations = () => {
                   sortField={sortField}
                   sortDirection={sortDirection}
                   onSort={handleSort}
+                  getOfferTypeLabel={getOfferTypeLabel}
+                  getOfferTypeStyles={getOfferTypeStyles}
                 />
               </div>
             </CardContent>
