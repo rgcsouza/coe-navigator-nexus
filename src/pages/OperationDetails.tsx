@@ -29,7 +29,7 @@ const OperationDetails = () => {
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-6">
           <OperationMainDetails operation={operation} />
-          <ClientDetailsTable clients={operation.clients} />
+          {operation.clients && <ClientDetailsTable clients={operation.clients} />}
         </div>
         
         <div>

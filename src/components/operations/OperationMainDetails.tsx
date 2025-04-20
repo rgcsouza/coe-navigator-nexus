@@ -6,18 +6,10 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { Operation } from "@/types/operations";
 
 interface OperationDetailsProps {
-  operation: {
-    id: string;
-    name: string;
-    type: string;
-    asset: string;
-    protection: string;
-    issuer: string;
-    creationDate: string;
-    maturityDate: string;
-  };
+  operation: Operation;
 }
 
 const OperationMainDetails = ({ operation }: OperationDetailsProps) => {
@@ -35,7 +27,7 @@ const OperationMainDetails = ({ operation }: OperationDetailsProps) => {
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Nome</p>
-            <p className="font-medium">{operation.name}</p>
+            <p className="font-medium">{operation.name || 'N/A'}</p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Tipo</p>
@@ -57,11 +49,11 @@ const OperationMainDetails = ({ operation }: OperationDetailsProps) => {
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Data de Criação</p>
-            <p className="font-medium">{operation.creationDate}</p>
+            <p className="font-medium">{operation.date || 'N/A'}</p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Data de Vencimento</p>
-            <p className="font-medium">{operation.maturityDate}</p>
+            <p className="font-medium">{operation.maturityDate || 'N/A'}</p>
           </div>
         </div>
       </CardContent>

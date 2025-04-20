@@ -15,12 +15,12 @@ interface AdditionalFields {
 
 export const useOperation = ({ initialOperation }: UseOperationProps) => {
   const { toast } = useToast();
-  const [operation, setOperation] = useState(initialOperation);
+  const [operation, setOperation] = useState<Operation>(initialOperation);
   const [loading, setLoading] = useState(false);
   const [additionalFields, setAdditionalFields] = useState<AdditionalFields>({
-    observations: "",
-    commercialConditions: "",
-    legalNotes: ""
+    observations: initialOperation.additionalFields?.observations || "",
+    commercialConditions: initialOperation.additionalFields?.commercialConditions || "",
+    legalNotes: initialOperation.additionalFields?.legalNotes || ""
   });
 
   const handleAdditionalFieldChange = (field: string, value: string) => {

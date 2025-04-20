@@ -3,13 +3,15 @@ export type OfferType = "d0" | "24x7" | "scheduled";
 
 export interface Operation {
   id: string;
+  name?: string;
   type: string;
   asset: string;
   protection: string;
   status: string;
   offerType: OfferType;
-  // Add missing properties
   date?: string;
+  creationDate?: string;
+  maturityDate?: string;
   totalValue?: string;
   clientCount?: number;
   clients?: Array<{
@@ -21,6 +23,11 @@ export interface Operation {
   }>;
   value?: string;
   issuer?: string;
+  additionalFields?: {
+    observations: string;
+    commercialConditions: string;
+    legalNotes: string;
+  };
 }
 
 export const getOfferTypeLabel = (offerType: OfferType): string => {
