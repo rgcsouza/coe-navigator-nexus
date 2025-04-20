@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar, Check, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import StatsCard from "@/components/dashboard/StatsCard";
 import AggregatedOperationsTable from "@/components/dashboard/AggregatedOperationsTable";
+import { Operation } from "@/types/operations";
 
 // Mock data for dashboard stats
 const dashboardStats = [
@@ -13,14 +17,15 @@ const dashboardStats = [
   { title: "Arquivos Gerados", value: 97, change: "+12", changeType: "positive" as const },
 ];
 
-// Mock aggregated operations
-const aggregatedOperations = [
+// Updated mock aggregated operations
+const aggregatedOperations: Operation[] = [
   { 
     id: "COE-2023-05-01", 
     type: "Autocall", 
     asset: "IBOVESPA", 
     protection: "95%",
     status: "Processado",
+    offerType: "d0",
     date: "2023-05-01", 
     totalValue: "R$ 1.250.000,00",
     clientCount: 5,
@@ -38,6 +43,7 @@ const aggregatedOperations = [
     asset: "S&P 500 / IBOVESPA", 
     protection: "100%",
     status: "Em análise",
+    offerType: "24x7",
     date: "2023-04-28", 
     totalValue: "R$ 750.000,00",
     clientCount: 3,
@@ -53,6 +59,7 @@ const aggregatedOperations = [
     asset: "NASDAQ", 
     protection: "90%",
     status: "Em edição",
+    offerType: "scheduled",
     date: "2023-04-27", 
     totalValue: "R$ 500.000,00",
     clientCount: 2,
@@ -67,6 +74,7 @@ const aggregatedOperations = [
     asset: "IBOVESPA", 
     protection: "100%",
     status: "Enviado",
+    offerType: "d0",
     date: "2023-04-25", 
     totalValue: "R$ 1.000.000,00",
     clientCount: 4,
@@ -95,6 +103,7 @@ const getStatusBadge = (status: string) => {
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [expandedOperation, setExpandedOperation] = useState<string | null>(null);
   
   const toggleOperation = (operationId: string) => {
@@ -107,6 +116,20 @@ const Dashboard = () => {
   
   const handleViewOperationDetails = (operationId: string) => {
     navigate(`/operation/${operationId}`);
+  };
+
+  const handleConcludeOperation = (operationId: string) => {
+    toast({
+      title: "Operação concluída",
+      description: `A operação ${operationId} foi concluída com sucesso.`
+    });
+  };
+
+  const handleCancelOperation = (operationId: string) => {
+    toast({
+      title: "Operação cancelada",
+      description: `A operação ${operationId} foi cancelada.`
+    });
   };
   
   return (
@@ -138,6 +161,8 @@ const Dashboard = () => {
               expandedOperation={expandedOperation}
               onToggleOperation={toggleOperation}
               onViewOperationDetails={handleViewOperationDetails}
+              onConcludeOperation={handleConcludeOperation}
+              onCancelOperation={handleCancelOperation}
               getStatusBadge={getStatusBadge}
             />
           </div>
