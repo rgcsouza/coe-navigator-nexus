@@ -1,10 +1,11 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChartContainer } from "@/components/ui/chart";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { cn } from "@/lib/utils";
 
 interface PayoffChartProps {
   operationType: string;
+  className?: string;
 }
 
 const callOptionData = [
@@ -27,7 +28,7 @@ const putOptionData = [
   { price: 130, payoff: 0 },
 ];
 
-const OperationPayoffChart = ({ operationType }: PayoffChartProps) => {
+const OperationPayoffChart = ({ operationType, className }: PayoffChartProps) => {
   const optionData = operationType.toLowerCase().includes('call') ? callOptionData : putOptionData;
 
   return (
@@ -37,7 +38,7 @@ const OperationPayoffChart = ({ operationType }: PayoffChartProps) => {
         <CardDescription>Visualização do retorno potencial da operação</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
+        <div className={cn("h-[300px] w-full", className)}>
           <ChartContainer
             config={{
               price: {

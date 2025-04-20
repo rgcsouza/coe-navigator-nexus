@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +6,7 @@ import OperationStatusBanner from "@/components/operations/OperationStatusBanner
 import OperationMainDetails from "@/components/operations/OperationMainDetails";
 import OperationPayoffChart from "@/components/operations/OperationPayoffChart";
 import OperationAdditionalFields from "@/components/operations/OperationAdditionalFields";
+import ClientDetailsTable from "@/components/dashboard/ClientDetailsTable";
 import { Button } from "@/components/ui/button";
 
 const OperationDetails = () => {
@@ -104,8 +104,21 @@ const OperationDetails = () => {
       </div>
       
       <OperationStatusBanner status={operation.status} />
-      <OperationMainDetails operation={operation} />
-      <OperationPayoffChart operationType={operation.type} />
+      
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <OperationMainDetails operation={operation} />
+          <ClientDetailsTable clients={operation.clients} />
+        </div>
+        
+        <div>
+          <OperationPayoffChart 
+            operationType={operation.type} 
+            className="h-[300px] w-full" 
+          />
+        </div>
+      </div>
+
       <OperationAdditionalFields
         fields={additionalFields}
         canSendOperation={canSendOperation}
