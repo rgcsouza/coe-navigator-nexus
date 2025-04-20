@@ -14,6 +14,7 @@ import Parameters from "./pages/Parameters";
 import Templates from "./pages/Templates";
 import History from "./pages/History";
 import FileGeneration from "./pages/FileGeneration";
+import OperationDetails from "./pages/OperationDetails";
 import NotFound from "./pages/NotFound";
 
 // Configure auth-protected routes
@@ -41,6 +42,10 @@ const App = () => (
               <Route 
                 path="/operations" 
                 element={<ProtectedRoute><Operations /></ProtectedRoute>} 
+              />
+              <Route 
+                path="/operation/:operationId" 
+                element={<ProtectedRoute><OperationDetails /></ProtectedRoute>} 
               />
               <Route 
                 path="/history" 

@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,9 +16,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Search, Filter, Plus, ArrowDown, ArrowUp, File, Settings } from "lucide-react";
+import { Search, Filter, Plus, ArrowDown, ArrowUp, File, Settings, Eye } from "lucide-react";
 
-// Mock data for operations
 const mockOperations = [
   { 
     id: "COE-2023-05-01", 
@@ -83,6 +82,7 @@ const mockOperations = [
 ];
 
 const Operations = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState("desc");
@@ -126,6 +126,10 @@ const Operations = () => {
     return sortDirection === "asc" ? 
       <ArrowUp className="w-3 h-3 ml-1" /> : 
       <ArrowDown className="w-3 h-3 ml-1" />;
+  };
+  
+  const handleViewOperationDetails = (operationId: string) => {
+    navigate(`/operation/${operationId}`);
   };
 
   return (
@@ -251,6 +255,14 @@ const Operations = () => {
                         <td className="py-3 px-4 font-medium">{op.value}</td>
                         <td className="py-2 px-4">
                           <div className="flex justify-center gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-8 w-8 p-0"
+                              onClick={() => handleViewOperationDetails(op.id)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                               <File className="h-4 w-4" />
                             </Button>
@@ -322,6 +334,14 @@ const Operations = () => {
                         <td className="py-3 px-4 font-medium">{op.value}</td>
                         <td className="py-2 px-4">
                           <div className="flex justify-center gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-8 w-8 p-0" 
+                              onClick={() => handleViewOperationDetails(op.id)}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                               <File className="h-4 w-4" />
                             </Button>

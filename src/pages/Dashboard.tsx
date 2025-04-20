@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { 
   Card, 
   CardContent, 
@@ -109,6 +110,7 @@ const getStatusBadge = (status: string) => {
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [expandedOperation, setExpandedOperation] = useState<string | null>(null);
   
   const toggleOperation = (operationId: string) => {
@@ -117,6 +119,10 @@ const Dashboard = () => {
     } else {
       setExpandedOperation(operationId);
     }
+  };
+  
+  const handleViewOperationDetails = (operationId: string) => {
+    navigate(`/operation/${operationId}`);
   };
   
   return (
@@ -198,7 +204,12 @@ const Dashboard = () => {
                               <ChevronDown className="h-4 w-4" />
                             }
                           </Button>
-                          <Button variant="ghost" size="sm" className="p-0 h-8 w-8">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="p-0 h-8 w-8"
+                            onClick={() => handleViewOperationDetails(op.id)}
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="sm" className="p-0 h-8 w-8">
