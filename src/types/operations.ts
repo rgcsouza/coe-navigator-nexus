@@ -8,6 +8,19 @@ export interface Operation {
   protection: string;
   status: string;
   offerType: OfferType;
+  // Add missing properties
+  date?: string;
+  totalValue?: string;
+  clientCount?: number;
+  clients?: Array<{
+    name: string;
+    cpf?: string;
+    document?: string;
+    value: string;
+    status: string;
+  }>;
+  value?: string;
+  issuer?: string;
 }
 
 export const getOfferTypeLabel = (offerType: OfferType): string => {

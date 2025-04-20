@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -10,9 +11,9 @@ import {
 import { OperationsHeader } from "@/components/operations/OperationsHeader";
 import { OperationsTable } from "@/components/operations/OperationsTable";
 import { useOperationsSort } from "@/hooks/useOperationsSort";
-import { getOfferTypeLabel, getOfferTypeStyles } from "@/types/operations";
+import { getOfferTypeLabel, getOfferTypeStyles, Operation } from "@/types/operations";
 
-const mockOperations = [
+const mockOperations: Operation[] = [
   { 
     id: "COE-2023-05-01", 
     type: "Autocall", 
@@ -29,6 +30,7 @@ const mockOperations = [
     asset: "S&P 500 / IBOVESPA", 
     issuer: "Banco XYZ", 
     status: "Concluída", 
+    offerType: "24x7",
     date: "2023-04-28", 
     value: "R$ 750.000,00",
     protection: "100%"
@@ -39,6 +41,7 @@ const mockOperations = [
     asset: "NASDAQ", 
     issuer: "Banco ABC", 
     status: "Concluída", 
+    offerType: "scheduled",
     date: "2023-04-27", 
     value: "R$ 500.000,00",
     protection: "90%" 
@@ -49,6 +52,7 @@ const mockOperations = [
     asset: "IBOVESPA", 
     issuer: "Banco DEF", 
     status: "Concluída", 
+    offerType: "d0",
     date: "2023-04-25", 
     value: "R$ 1.000.000,00",
     protection: "100%"
@@ -59,6 +63,7 @@ const mockOperations = [
     asset: "Ouro", 
     issuer: "Banco XYZ", 
     status: "Concluída", 
+    offerType: "24x7",
     date: "2023-04-20", 
     value: "R$ 350.000,00",
     protection: "95%" 
@@ -69,6 +74,7 @@ const mockOperations = [
     asset: "EUR/USD / IBOVESPA", 
     issuer: "Banco DEF", 
     status: "Concluída", 
+    offerType: "scheduled",
     date: "2023-04-15", 
     value: "R$ 1.500.000,00",
     protection: "98%" 
