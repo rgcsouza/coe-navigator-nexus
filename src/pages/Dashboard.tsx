@@ -1,32 +1,16 @@
-
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, FileText, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import StatsCard from "@/components/dashboard/StatsCard";
+import AggregatedOperationsTable from "@/components/dashboard/AggregatedOperationsTable";
 
 // Mock data for dashboard stats
 const dashboardStats = [
-  { title: "Operações Registradas", value: 124, change: "+5%", changeType: "positive" },
-  { title: "Operações Pendentes", value: 8, change: "-2", changeType: "positive" },
-  { title: "Templates Ativos", value: 15, change: "+3", changeType: "positive" },
-  { title: "Arquivos Gerados", value: 97, change: "+12", changeType: "positive" },
+  { title: "Operações Registradas", value: 124, change: "+5%", changeType: "positive" as const },
+  { title: "Operações Pendentes", value: 8, change: "-2", changeType: "positive" as const },
+  { title: "Templates Ativos", value: 15, change: "+3", changeType: "positive" as const },
+  { title: "Arquivos Gerados", value: 97, change: "+12", changeType: "positive" as const },
 ];
 
 // Mock aggregated operations
@@ -137,19 +121,7 @@ const Dashboard = () => {
       {/* Dashboard Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {dashboardStats.map((stat, i) => (
-          <Card key={i}>
-            <CardHeader className="pb-2">
-              <CardDescription>{stat.title}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-end justify-between">
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <div className={`text-sm ${stat.changeType === "positive" ? "text-green-500" : "text-red-500"}`}>
-                  {stat.change}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <StatsCard key={i} {...stat} />
         ))}
       </div>
       
@@ -161,102 +133,13 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Ativo</TableHead>
-                  <TableHead>Proteção</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Valor Total</TableHead>
-                  <TableHead>Clientes</TableHead>
-                  <TableHead>Ações</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {aggregatedOperations.map((op) => (
-                  <React.Fragment key={op.id}>
-                    <TableRow className="hover:bg-muted/50">
-                      <TableCell className="font-medium text-primary">{op.id}</TableCell>
-                      <TableCell>{op.type}</TableCell>
-                      <TableCell>{op.asset}</TableCell>
-                      <TableCell>{op.protection}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className={getStatusBadge(op.status)}>
-                          {op.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{op.date}</TableCell>
-                      <TableCell className="font-medium">{op.totalValue}</TableCell>
-                      <TableCell>{op.clientCount}</TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => toggleOperation(op.id)}
-                            className="p-0 h-8 w-8"
-                          >
-                            {expandedOperation === op.id ? 
-                              <ChevronUp className="h-4 w-4" /> : 
-                              <ChevronDown className="h-4 w-4" />
-                            }
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="p-0 h-8 w-8"
-                            onClick={() => handleViewOperationDetails(op.id)}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="p-0 h-8 w-8">
-                            <FileText className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                    
-                    {/* Expanded client details */}
-                    {expandedOperation === op.id && (
-                      <TableRow>
-                        <TableCell colSpan={9} className="p-0">
-                          <div className="bg-muted/30 p-4">
-                            <h4 className="font-medium mb-2">Detalhes dos Clientes</h4>
-                            <Table>
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead>Nome</TableHead>
-                                  <TableHead>CPF</TableHead>
-                                  <TableHead>Valor</TableHead>
-                                  <TableHead>Status</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                {op.clients.map((client, clientIndex) => (
-                                  <TableRow key={clientIndex}>
-                                    <TableCell>{client.name}</TableCell>
-                                    <TableCell>{client.cpf}</TableCell>
-                                    <TableCell>{client.value}</TableCell>
-                                    <TableCell>
-                                      <Badge variant="outline" className={getStatusBadge(client.status)}>
-                                        {client.status}
-                                      </Badge>
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </React.Fragment>
-                ))}
-              </TableBody>
-            </Table>
+            <AggregatedOperationsTable
+              operations={aggregatedOperations}
+              expandedOperation={expandedOperation}
+              onToggleOperation={toggleOperation}
+              onViewOperationDetails={handleViewOperationDetails}
+              getStatusBadge={getStatusBadge}
+            />
           </div>
         </CardContent>
       </Card>
