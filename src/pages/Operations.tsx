@@ -99,7 +99,7 @@ const Operations = () => {
     op.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
     op.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
     op.asset.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    op.issuer.toLowerCase().includes(searchTerm.toLowerCase())
+    (op.issuer?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
   );
 
   const sortedOperations = useOperationsSort(filteredOperations, sortField, sortDirection);

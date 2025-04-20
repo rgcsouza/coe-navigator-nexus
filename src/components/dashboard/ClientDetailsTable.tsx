@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 
 interface Client {
   name: string;
-  cpf: string;
+  cpf?: string;  // Make cpf optional to match the Operation type
+  document?: string;
   value: string;
   status: string;
 }
