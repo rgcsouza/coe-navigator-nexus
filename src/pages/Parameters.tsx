@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/table";
 import { Plus, Trash, Save, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // Mock data for parameters
 const mockIssuers = [
@@ -50,6 +50,15 @@ const mockTerms = [
   { id: 4, name: "Muito Longo", months: 36, active: true },
 ];
 
+// Mock data for instruments
+const mockInstruments = [
+  { id: 1, name: "Call Européia", type: "Opção", underlying: "IBOVESPA", active: true },
+  { id: 2, name: "Put Européia", type: "Opção", underlying: "IBOVESPA", active: true },
+  { id: 3, name: "Call Digital", type: "Opção", underlying: "S&P 500", active: true },
+  { id: 4, name: "Call Spread", type: "Opção", underlying: "NASDAQ", active: true },
+  { id: 5, name: "Put Spread", type: "Opção", underlying: "EUR/USD", active: true },
+];
+
 const Parameters = () => {
   const { user } = useAuth();
   const isAdmin = user?.role === "Admin";
@@ -61,6 +70,11 @@ const Parameters = () => {
   const [newProtectionValue, setNewProtectionValue] = useState("");
   const [newTermName, setNewTermName] = useState("");
   const [newTermMonths, setNewTermMonths] = useState<number | string>("");
+
+  const [newInstrumentName, setNewInstrumentName] = useState("");
+  const [newInstrumentType, setNewInstrumentType] = useState("");
+  const [newInstrumentUnderlying, setNewInstrumentUnderlying] = useState("");
+  const [instruments, setInstruments] = useState(mockInstruments);
 
   const [issuers, setIssuers] = useState(mockIssuers);
   const [assets, setAssets] = useState(mockAssets);
@@ -116,6 +130,25 @@ const Parameters = () => {
     setNewTermMonths("");
   };
 
+  const handleAddInstrument = () => {
+    if (!newInstrumentName.trim() || !newInstrumentType.trim() || !newInstrumentUnderlying.trim()) return;
+    
+    const newInstrumentsArray = [
+      ...instruments,
+      { 
+        id: instruments.length + 1,
+        name: newInstrumentName, 
+        type: newInstrumentType, 
+        underlying: newInstrumentUnderlying,
+        active: true 
+      }
+    ];
+    setInstruments(newInstrumentsArray);
+    setNewInstrumentName("");
+    setNewInstrumentType("");
+    setNewInstrumentUnderlying("");
+  };
+
   const handleRemoveIssuer = (id: number) => {
     setIssuers(issuers.filter(issuer => issuer.id !== id));
   };
@@ -130,6 +163,10 @@ const Parameters = () => {
 
   const handleRemoveTerm = (id: number) => {
     setTerms(terms.filter(term => term.id !== id));
+  };
+
+  const handleRemoveInstrument = (id: number) => {
+    setInstruments(instruments.filter(instrument => instrument.id !== id));
   };
 
   return (
@@ -147,6 +184,7 @@ const Parameters = () => {
           <TabsTrigger value="assets">Ativos</TabsTrigger>
           <TabsTrigger value="protection">Proteção</TabsTrigger>
           <TabsTrigger value="terms">Prazos</TabsTrigger>
+          <TabsTrigger value="instruments">Instrumentos</TabsTrigger>
         </TabsList>
 
         {/* Issuers Tab */}
@@ -505,6 +543,134 @@ const Parameters = () => {
                     )}
                   </TableBody>
                 </Table>
+                {isAdmin && (
+                  <div className="flex justify-end mt-4">
+                    <Button className="flex items-center gap-2">
+                      <Save className="h-4 w-4" />
+                      <span>Salvar Alterações</span>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Instruments Tab */}
+        <TabsContent value="instruments" className="m-0">
+          <Card>
+            <CardHeader>
+              <CardTitle>Instrumentos Derivativos</CardTitle>
+              <CardDescription>
+                Configure os instrumentos derivativos disponíveis para estruturação de COE
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {isAdmin && (
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium mb-1">
+                        Nome do Instrumento
+                      </label>
+                      <Input
+                        placeholder="Nome do instrumento"
+                        value={newInstrumentName}
+                        onChange={(e) => setNewInstrumentName(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium mb-1">
+                        Tipo
+                      </label>
+                      <Select
+                        value={newInstrumentType}
+                        onValueChange={setNewInstrumentType}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione o tipo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Opção">Opção</SelectItem>
+                          <SelectItem value="Swap">Swap</SelectItem>
+                          <SelectItem value="Forward">Forward</SelectItem>
+                          <SelectItem value="Outro">Outro</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium mb-1">
+                        Ativo Subjacente
+                      </label>
+                      <Select
+                        value={newInstrumentUnderlying}
+                        onValueChange={setNewInstrumentUnderlying}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione o ativo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {assets.map(asset => (
+                            <SelectItem key={asset.id} value={asset.name}>
+                              {asset.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button onClick={handleAddInstrument} className="flex items-center gap-2">
+                      <Plus className="h-4 w-4" />
+                      <span>Adicionar</span>
+                    </Button>
+                  </div>
+                )}
+                
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>Tipo</TableHead>
+                      <TableHead>Ativo Subjacente</TableHead>
+                      <TableHead>Status</TableHead>
+                      {isAdmin && <TableHead className="w-[100px]">Ações</TableHead>}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {instruments.map((instrument) => (
+                      <TableRow key={instrument.id}>
+                        <TableCell>{instrument.name}</TableCell>
+                        <TableCell>{instrument.type}</TableCell>
+                        <TableCell>{instrument.underlying}</TableCell>
+                        <TableCell>
+                          <span className={`inline-block px-2 py-1 rounded-full text-xs ${instrument.active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                            {instrument.active ? "Ativo" : "Inativo"}
+                          </span>
+                        </TableCell>
+                        {isAdmin && (
+                          <TableCell>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleRemoveInstrument(instrument.id)}
+                              >
+                                <Trash className="h-4 w-4 text-destructive" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                    {instruments.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={isAdmin ? 5 : 4} className="text-center py-4 text-muted-foreground">
+                          Nenhum instrumento cadastrado
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+                
                 {isAdmin && (
                   <div className="flex justify-end mt-4">
                     <Button className="flex items-center gap-2">
