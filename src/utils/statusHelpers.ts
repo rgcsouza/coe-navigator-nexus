@@ -1,5 +1,6 @@
 
 import { CheckCircle, Clock, FileText, Send, AlertCircle, XCircle } from "lucide-react";
+import React from "react";
 
 export const getStatusBadge = (status: string) => {
   const statusStyles = {
