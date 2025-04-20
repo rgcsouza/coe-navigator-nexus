@@ -5,7 +5,7 @@ import { getStatusBadge } from "@/utils/statusHelpers";
 
 interface Client {
   name: string;
-  cpf?: string;  // Make cpf optional to match the Operation type
+  cpf?: string;
   document?: string;
   value: string;
   status: string;
@@ -23,7 +23,7 @@ const ClientDetailsTable = ({ clients }: ClientDetailsTableProps) => {
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
-            <TableHead>CPF</TableHead>
+            <TableHead>CPF/Documento</TableHead>
             <TableHead>Valor</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
@@ -32,7 +32,7 @@ const ClientDetailsTable = ({ clients }: ClientDetailsTableProps) => {
           {clients.map((client, clientIndex) => (
             <TableRow key={clientIndex}>
               <TableCell>{client.name}</TableCell>
-              <TableCell>{client.cpf}</TableCell>
+              <TableCell>{client.document || client.cpf || 'N/A'}</TableCell>
               <TableCell>{client.value}</TableCell>
               <TableCell>
                 <Badge variant="outline" className={getStatusBadge(client.status)}>

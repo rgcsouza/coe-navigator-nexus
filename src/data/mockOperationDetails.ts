@@ -1,4 +1,6 @@
 
+import { OfferType } from "@/types/operations";
+
 export const mockOperationDetails = {
   id: "COE-2023-05-01",
   name: "Autocall IBOVESPA Q2 2023",
@@ -10,7 +12,7 @@ export const mockOperationDetails = {
   maturityDate: "01/05/2025",
   totalValue: "R$ 1.250.000,00",
   issuer: "Banco ABC",
-  offerType: "scheduled", // Adding the missing required offerType
+  offerType: "scheduled" as OfferType, // Adding proper type assertion
   clients: [
     { name: "Cliente A", document: "123.456.789-00", value: "R$ 500.000,00", status: "Em edição" },
     { name: "Cliente B", document: "987.654.321-00", value: "R$ 300.000,00", status: "Em edição" },
