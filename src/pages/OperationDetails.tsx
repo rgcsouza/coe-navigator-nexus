@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { 
@@ -31,6 +30,8 @@ import {
   AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ChartContainer, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 // Mock data for operation details
 const mockOperationDetails = {
@@ -91,6 +92,27 @@ const getStatusIcon = (status: string) => {
       return <FileText className="h-5 w-5 text-gray-600" />;
   }
 };
+
+// Sample data for option payoff graphs
+const callOptionData = [
+  { price: 70, payoff: 0 },
+  { price: 80, payoff: 0 },
+  { price: 90, payoff: 0 },
+  { price: 100, payoff: 0 },
+  { price: 110, payoff: 10 },
+  { price: 120, payoff: 20 },
+  { price: 130, payoff: 30 },
+];
+
+const putOptionData = [
+  { price: 70, payoff: 30 },
+  { price: 80, payoff: 20 },
+  { price: 90, payoff: 10 },
+  { price: 100, payoff: 0 },
+  { price: 110, payoff: 0 },
+  { price: 120, payoff: 0 },
+  { price: 130, payoff: 0 },
+];
 
 const OperationDetails = () => {
   const { operationId } = useParams();
@@ -196,6 +218,16 @@ const OperationDetails = () => {
   // Check if operation can be canceled
   const canCancelOperation = operation.status !== "Processado" && operation.status !== "Cancelado";
 
+  // Determine which graph to show based on operation type
+  const getOptionData = () => {
+    if (operation.type.toLowerCase().includes('call')) {
+      return callOptionData;
+    }
+    return putOptionData;
+  };
+
+  const optionData = getOptionData();
+  
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -374,6 +406,77 @@ const OperationDetails = () => {
             Enviar para B3
           </Button>
         </CardFooter>
+      </Card>
+
+      {/* Option Payoff Chart Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Gráfico de Payoff</CardTitle>
+          <CardDescription>Visualização do retorno potencial da operação</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] w-full">
+            <ChartContainer
+              config={{
+                price: {
+                  label: "Preço do Ativo",
+                  theme: {
+                    light: "#475569",
+                    dark: "#94a3b8"
+                  }
+                },
+                payoff: {
+                  label: "Retorno",
+                  theme: {
+                    light: "#8b5cf6",
+                    dark: "#a78bfa"
+                  }
+                }
+              }}
+            >
+              <AreaChart data={optionData}>
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis
+                  dataKey="price"
+                  label={{ value: 'Preço do Ativo', position: 'bottom' }}
+                  className="text-muted-foreground text-xs"
+                />
+                <YAxis
+                  label={{ value: 'Retorno', angle: -90, position: 'left' }}
+                  className="text-muted-foreground text-xs"
+                />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="rounded-lg border bg-background p-2 shadow-sm">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="text-muted-foreground text-xs">Preço:</div>
+                            <div className="font-mono text-xs font-medium">
+                              {payload[0].payload.price}
+                            </div>
+                            <div className="text-muted-foreground text-xs">Retorno:</div>
+                            <div className="font-mono text-xs font-medium">
+                              {payload[0].payload.payoff}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    }
+                    return null
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="payoff"
+                  stroke="var(--color-payoff)"
+                  fill="var(--color-payoff)"
+                  fillOpacity={0.2}
+                />
+              </AreaChart>
+            </ChartContainer>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );
