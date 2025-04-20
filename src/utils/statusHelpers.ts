@@ -1,4 +1,3 @@
-
 import { CheckCircle, Clock, FileText, Send, AlertCircle, XCircle } from "lucide-react";
 import React from "react";
 
@@ -18,18 +17,18 @@ export const getStatusBadge = (status: string) => {
 export const getStatusIcon = (status: string) => {
   switch(status) {
     case "Processado":
-      return <CheckCircle className="h-5 w-5 text-green-600" />;
+      return () => <CheckCircle className="h-5 w-5 text-green-600" />;
     case "Em análise":
-      return <Clock className="h-5 w-5 text-blue-600" />;
+      return () => <Clock className="h-5 w-5 text-blue-600" />;
     case "Em edição":
-      return <FileText className="h-5 w-5 text-amber-600" />;
+      return () => <FileText className="h-5 w-5 text-amber-600" />;
     case "Enviado":
-      return <Send className="h-5 w-5 text-purple-600" />;
+      return () => <Send className="h-5 w-5 text-purple-600" />;
     case "Rejeitado":
-      return <AlertCircle className="h-5 w-5 text-red-600" />;
+      return () => <AlertCircle className="h-5 w-5 text-red-600" />;
     case "Cancelado":
-      return <XCircle className="h-5 w-5 text-gray-600" />;
+      return () => <XCircle className="h-5 w-5 text-gray-600" />;
     default:
-      return <FileText className="h-5 w-5 text-gray-600" />;
+      return () => <FileText className="h-5 w-5 text-gray-600" />;
   }
 };
