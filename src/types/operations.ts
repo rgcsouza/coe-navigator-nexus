@@ -1,5 +1,5 @@
 
-export type OfferType = "d0" | "24x7" | "scheduled";
+export type OfferType = "d0" | "24x7" | "agendado";
 
 export interface Operation {
   id: string;
@@ -34,7 +34,7 @@ export const getOfferTypeLabel = (offerType: OfferType): string => {
   const labels = {
     d0: "D0",
     "24x7": "24x7",
-    scheduled: "BookBuild"
+    agendado: "Agendado"
   };
   return labels[offerType];
 };
@@ -43,7 +43,7 @@ export const getOfferTypeStyles = (offerType: OfferType): string => {
   const styles = {
     d0: "bg-[#FF8801] text-white",
     "24x7": "bg-[#FEC000] text-white",
-    scheduled: "bg-[#FEC000] text-white"
+    agendado: "bg-[#FEC000] text-white"
   };
   return styles[offerType];
 };

@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,7 +24,20 @@ import {
   FileDown
 } from "lucide-react";
 
-// Define the navigation items with role-based access control
+const customNavItems = [
+  {
+    label: "Produtos",
+    items: [
+      {
+        name: "Configurações de Produtos",
+        icon: Settings,
+        path: "/product-config",
+        roles: ["admin"]
+      }
+    ]
+  }
+];
+
 const navigationItems = [
   {
     label: "Principal",
@@ -91,7 +103,6 @@ export function AppSidebar() {
   const { user } = useAuth();
   const location = useLocation();
   
-  // Check if user has access to route
   const hasAccess = (roles: string[]) => {
     if (!user || !user.role) return false;
     return roles.includes(user.role.toLowerCase());
@@ -108,6 +119,31 @@ export function AppSidebar() {
       </SidebarHeader>
       
       <SidebarContent>
+        {customNavItems.map((group, i) => (
+          <SidebarGroup key={`custom${i}`}>
+            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.filter(item => hasAccess(item.roles)).map((item, j) => (
+                  <SidebarMenuItem key={j}>
+                    <SidebarMenuButton 
+                      asChild
+                      className={cn(
+                        "flex items-center space-x-2",
+                        location.pathname === item.path ? "bg-sidebar-accent text-accent font-medium" : ""
+                      )}
+                    >
+                      <Link to={item.path}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
         {navigationItems.map((group, i) => (
           <SidebarGroup key={i}>
             <SidebarGroupLabel>{group.label}</SidebarGroupLabel>

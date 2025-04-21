@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,8 +15,8 @@ import History from "./pages/History";
 import FileGeneration from "./pages/FileGeneration";
 import OperationDetails from "./pages/OperationDetails";
 import NotFound from "./pages/NotFound";
+import ProductConfig from "./pages/ProductConfig";
 
-// Configure auth-protected routes
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -62,6 +61,10 @@ const App = () => (
               <Route 
                 path="/file-generation" 
                 element={<ProtectedRoute><FileGeneration /></ProtectedRoute>} 
+              />
+              <Route 
+                path="/product-config" 
+                element={<ProtectedRoute><ProductConfig /></ProtectedRoute>} 
               />
             </Route>
             
