@@ -12,7 +12,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarProvider
+  SidebarProvider,
+  SidebarTrigger
 } from "@/components/ui/sidebar";
 import { 
   Home, 
@@ -21,7 +22,8 @@ import {
   Database, 
   User, 
   Calendar,
-  FileDown
+  FileDown,
+  Menu
 } from "lucide-react";
 
 const customNavItems = [
@@ -109,68 +111,73 @@ export function AppSidebar() {
   };
 
   return (
-    <SidebarContainer className="border-r" collapsible="none">
-      <SidebarHeader className="flex justify-between items-center pb-2">
-        <Link to="/dashboard" className="flex items-center space-x-1 px-4">
-          <span className="font-bold text-accent">Estruturada</span>
-          <span className="font-medium text-sm">Captação</span>
-        </Link>
-      </SidebarHeader>
-      
-      <SidebarContent>
-        {customNavItems.map((group, i) => (
-          <SidebarGroup key={`custom${i}`}>
-            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {group.items.filter(item => hasAccess(item.roles)).map((item, j) => (
-                  <SidebarMenuItem key={j}>
-                    <SidebarMenuButton 
-                      asChild
-                      className={cn(
-                        "flex items-center space-x-2",
-                        location.pathname === item.path ? "bg-sidebar-accent text-accent font-medium" : ""
-                      )}
-                    >
-                      <Link to={item.path}>
-                        <item.icon className="h-4 w-4" />
-                        <span>{item.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
-        {navigationItems.map((group, i) => (
-          <SidebarGroup key={i}>
-            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {group.items.filter(item => hasAccess(item.roles)).map((item, j) => (
-                  <SidebarMenuItem key={j}>
-                    <SidebarMenuButton 
-                      asChild
-                      className={cn(
-                        "flex items-center space-x-2",
-                        location.pathname === item.path ? "bg-sidebar-accent text-accent font-medium" : ""
-                      )}
-                    >
-                      <Link to={item.path}>
-                        <item.icon className="h-4 w-4" />
-                        <span>
-                          {item.name === "Operações" ? "Operações Estruturadas" : item.name}
-                        </span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
-      </SidebarContent>
-    </SidebarContainer>
+    <>
+      <div className="md:hidden p-2">
+        <SidebarTrigger>
+          <Menu className="h-6 w-6" />
+        </SidebarTrigger>
+      </div>
+      <SidebarContainer className="border-r">
+        <SidebarHeader className="flex justify-between items-center pb-2">
+          <Link to="/dashboard" className="flex items-center space-x-1 px-4">
+            <span className="font-bold text-accent">Estruturada</span>
+            <span className="font-medium text-sm">Captação</span>
+          </Link>
+        </SidebarHeader>
+        
+        <SidebarContent>
+          {customNavItems.map((group, i) => (
+            <SidebarGroup key={`custom${i}`}>
+              <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.items.filter(item => hasAccess(item.roles)).map((item, j) => (
+                    <SidebarMenuItem key={j}>
+                      <SidebarMenuButton 
+                        asChild
+                        className={cn(
+                          "flex items-center space-x-2",
+                          location.pathname === item.path ? "bg-sidebar-accent text-accent font-medium" : ""
+                        )}
+                      >
+                        <Link to={item.path}>
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.name}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
+          {navigationItems.map((group, i) => (
+            <SidebarGroup key={i}>
+              <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.items.filter(item => hasAccess(item.roles)).map((item, j) => (
+                    <SidebarMenuItem key={j}>
+                      <SidebarMenuButton 
+                        asChild
+                        className={cn(
+                          "flex items-center space-x-2",
+                          location.pathname === item.path ? "bg-sidebar-accent text-accent font-medium" : ""
+                        )}
+                      >
+                        <Link to={item.path}>
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.name}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
+        </SidebarContent>
+      </SidebarContainer>
+    </>
   );
 }

@@ -2,7 +2,8 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Search, User, Settings, LogOut } from "lucide-react";
+import { Search, User, Settings, LogOut, Menu } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +19,13 @@ export function Header() {
   return (
     <header className="bg-primary text-primary-foreground py-3 px-4 flex items-center justify-between shadow-md">
       <div className="flex items-center space-x-4">
+        {isAuthenticated && (
+          <div className="md:hidden">
+            <SidebarTrigger>
+              <Menu className="h-6 w-6" />
+            </SidebarTrigger>
+          </div>
+        )}
         <Link to="/" className="flex items-center space-x-2">
           <div className="bg-accent text-accent-foreground font-bold text-xl px-2 py-1 rounded">Estruturada</div>
           <span className="font-semibold text-lg hidden sm:inline">Sistema de Operações Estruturadas</span>
@@ -86,4 +94,3 @@ export function Header() {
     </header>
   );
 }
-
