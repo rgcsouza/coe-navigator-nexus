@@ -13,7 +13,7 @@ export function Layout() {
       <Header />
       
       {isAuthenticated ? (
-        <SidebarProvider>
+        <SidebarProvider defaultOpen={true}>
           <div className="flex flex-1 w-full">
             <AppSidebar />
             <main className="flex-1 p-6 overflow-auto">

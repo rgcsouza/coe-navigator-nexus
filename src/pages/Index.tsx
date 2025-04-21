@@ -1,5 +1,4 @@
 
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
@@ -16,7 +15,7 @@ const Index = () => {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="text-primary">COE</span> Navigator <span className="text-accent">Nexus</span>
+            <span className="text-primary">COE</span> Captação <span className="text-accent">Nexus</span>
           </h1>
           
           <p className="text-lg md:text-xl mb-8 text-muted-foreground">
@@ -100,7 +99,7 @@ const Index = () => {
             <div className="mb-4 md:mb-0">
               <div className="flex items-center">
                 <span className="text-lg font-bold text-primary mr-2">COE</span>
-                <span className="text-sm">Navigator Nexus</span>
+                <span className="text-sm">Captação Nexus</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 © {new Date().getFullYear()} Sistema para negociação e gestão de COE
