@@ -19,7 +19,7 @@ export function Header() {
     <header className="bg-primary text-primary-foreground py-3 px-4 flex items-center justify-between shadow-md">
       <div className="flex items-center space-x-4">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="bg-accent text-accent-foreground font-bold text-xl px-2 py-1 rounded">COE</div>
+          <div className="bg-accent text-accent-foreground font-bold text-xl px-2 py-1 rounded">Estruturada</div>
           <span className="font-semibold text-lg hidden sm:inline">Sistema de Operações Estruturadas</span>
         </Link>
       </div>
@@ -86,3 +86,4 @@ export function Header() {
     </header>
   );
 }
+

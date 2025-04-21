@@ -31,13 +31,13 @@ const OperationAdditionalFields = ({
     <Card>
       <CardHeader>
         <CardTitle>Campos Adicionais</CardTitle>
-        <CardDescription>Informações complementares da operação</CardDescription>
+        <CardDescription>Informações complementares da estrutura</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
           <label className="text-sm font-medium mb-1 block">Condições Comerciais *</label>
           <Textarea 
-            placeholder="Descreva as condições comerciais desta operação" 
+            placeholder="Descreva as condições comerciais desta estrutura" 
             className="resize-none"
             value={fields.commercialConditions}
             onChange={(e) => onFieldChange("commercialConditions", e.target.value)}
@@ -46,7 +46,7 @@ const OperationAdditionalFields = ({
         <div>
           <label className="text-sm font-medium mb-1 block">Observações</label>
           <Textarea 
-            placeholder="Observações gerais sobre a operação" 
+            placeholder="Observações gerais sobre a estrutura" 
             className="resize-none"
             value={fields.observations}
             onChange={(e) => onFieldChange("observations", e.target.value)}

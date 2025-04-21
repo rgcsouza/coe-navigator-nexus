@@ -83,7 +83,7 @@ const History = () => {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Histórico</h1>
         <p className="text-muted-foreground">
-          Histórico de operações COE registradas no sistema
+          Histórico de operações estruturadas registradas no sistema
         </p>
       </div>
 
@@ -132,7 +132,7 @@ const History = () => {
         <CardHeader>
           <CardTitle>Operações Registradas</CardTitle>
           <CardDescription>
-            Histórico completo de operações COE registradas
+            Histórico completo de operações estruturadas registradas
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -107,7 +107,7 @@ const Operations = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Operações COE</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Operações Estruturadas</h1>
         <p className="text-muted-foreground">
           Gerencie operações de Certificados de Operações Estruturadas
         </p>
@@ -132,7 +132,7 @@ const Operations = () => {
             <CardHeader className="p-4">
               <CardTitle>Operações Registradas</CardTitle>
               <CardDescription>
-                Visualize e gerencie todas as operações COE registradas no sistema
+                Visualize e gerencie todas as operações estruturadas registradas no sistema
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">

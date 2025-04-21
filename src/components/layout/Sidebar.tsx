@@ -112,7 +112,7 @@ export function AppSidebar() {
     <SidebarContainer className="border-r" collapsible="none">
       <SidebarHeader className="flex justify-between items-center pb-2">
         <Link to="/dashboard" className="flex items-center space-x-1 px-4">
-          <span className="font-bold text-accent">COE</span>
+          <span className="font-bold text-accent">Estruturada</span>
           <span className="font-medium text-sm">Captação</span>
         </Link>
       </SidebarHeader>
@@ -159,7 +159,9 @@ export function AppSidebar() {
                     >
                       <Link to={item.path}>
                         <item.icon className="h-4 w-4" />
-                        <span>{item.name}</span>
+                        <span>
+                          {item.name === "Operações" ? "Operações Estruturadas" : item.name}
+                        </span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

@@ -11,15 +11,15 @@ const Index = () => {
       <div className="container mx-auto flex-1 flex flex-col md:flex-row items-center justify-center px-4 py-12">
         <div className="md:w-1/2 md:pr-8 text-center md:text-left mb-8 md:mb-0">
           <div className="inline-block mb-4 rounded bg-primary px-3 py-1 text-sm text-primary-foreground">
-            Sistema para negociação e gestão de COE
+            Sistema para negociação e gestão de Estruturada
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="text-primary">COE</span> Captação <span className="text-accent">Nexus</span>
+            <span className="text-primary">Estruturada</span> Captação <span className="text-accent">Nexus</span>
           </h1>
           
           <p className="text-lg md:text-xl mb-8 text-muted-foreground">
-            Registre operações COE, configure estruturas personalizadas e gere arquivos para envio à B3 conforme especificações.
+            Registre operações Estruturadas, configure estruturas personalizadas e gere arquivos para envio à B3 conforme especificações.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
@@ -40,7 +40,7 @@ const Index = () => {
             <div className="relative bg-card shadow-2xl rounded-xl p-6 border">
               <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center space-x-2">
-                  <div className="bg-accent text-accent-foreground font-bold text-lg px-2 py-1 rounded">COE</div>
+                  <div className="bg-accent text-accent-foreground font-bold text-lg px-2 py-1 rounded">Estruturada</div>
                   <h2 className="font-semibold">Dashboard</h2>
                 </div>
                 <div className="flex space-x-1">
@@ -53,7 +53,7 @@ const Index = () => {
               <div className="space-y-4">
                 <div className="grid gap-3 grid-cols-2">
                   <div className="bg-muted rounded-md p-3">
-                    <div className="text-sm text-muted-foreground">Operações</div>
+                    <div className="text-sm text-muted-foreground">Operações Estruturadas</div>
                     <div className="text-2xl font-bold">124</div>
                   </div>
                   <div className="bg-muted rounded-md p-3">
@@ -98,11 +98,11 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <div className="flex items-center">
-                <span className="text-lg font-bold text-primary mr-2">COE</span>
+                <span className="text-lg font-bold text-primary mr-2">Estruturada</span>
                 <span className="text-sm">Captação Nexus</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                © {new Date().getFullYear()} Sistema para negociação e gestão de COE
+                © {new Date().getFullYear()} Sistema para negociação e gestão de Estruturada
               </p>
             </div>
             <div className="flex space-x-4">

@@ -17,7 +17,7 @@ const OperationMainDetails = ({ operation }: OperationDetailsProps) => {
     <Card>
       <CardHeader>
         <CardTitle>Informações da Operação</CardTitle>
-        <CardDescription>Detalhes principais do certificado</CardDescription>
+        <CardDescription>Detalhes principais da estrutura</CardDescription>
       </CardHeader>
       <CardContent className="grid md:grid-cols-2 gap-6">
         <div className="space-y-4">
