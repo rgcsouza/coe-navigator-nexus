@@ -41,7 +41,7 @@ const mockOperations: Operation[] = [
     asset: "NASDAQ", 
     issuer: "Banco ABC", 
     status: "Concluída", 
-    offerType: "scheduled",
+    offerType: "agendado",
     date: "2023-04-27", 
     value: "R$ 500.000,00",
     protection: "90%" 
@@ -74,7 +74,7 @@ const mockOperations: Operation[] = [
     asset: "EUR/USD / IBOVESPA", 
     issuer: "Banco DEF", 
     status: "Concluída", 
-    offerType: "scheduled",
+    offerType: "agendado",
     date: "2023-04-15", 
     value: "R$ 1.500.000,00",
     protection: "98%" 

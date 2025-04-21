@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -60,7 +61,7 @@ const aggregatedOperations: Operation[] = [
     asset: "NASDAQ", 
     protection: "90%",
     status: "Em edição",
-    offerType: "scheduled",
+    offerType: "agendado",
     date: "2023-04-27", 
     totalValue: "R$ 500.000,00",
     clientCount: 2,
