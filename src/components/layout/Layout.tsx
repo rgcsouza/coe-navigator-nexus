@@ -9,23 +9,23 @@ export function Layout() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      {isAuthenticated ? (
-        <SidebarProvider defaultOpen={true}>
+    <div className="min-h-screen flex flex-col w-full">
+      <SidebarProvider defaultOpen={true}>
+        <Header />
+        
+        {isAuthenticated ? (
           <div className="flex flex-1 w-full">
             <AppSidebar />
             <main className="flex-1 p-6 overflow-auto">
               <Outlet />
             </main>
           </div>
-        </SidebarProvider>
-      ) : (
-        <main className="flex-1">
-          <Outlet />
-        </main>
-      )}
+        ) : (
+          <main className="flex-1">
+            <Outlet />
+          </main>
+        )}
+      </SidebarProvider>
     </div>
   );
 }
