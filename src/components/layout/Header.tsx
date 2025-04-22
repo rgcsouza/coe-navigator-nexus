@@ -20,11 +20,9 @@ export function Header() {
     <header className="bg-primary text-primary-foreground py-3 px-4 flex items-center justify-between shadow-md">
       <div className="flex items-center space-x-4">
         {isAuthenticated && (
-          <div className="md:hidden">
-            <SidebarTrigger>
-              <Menu className="h-6 w-6" />
-            </SidebarTrigger>
-          </div>
+          <SidebarTrigger className="md:flex">
+            <Menu className="h-6 w-6" />
+          </SidebarTrigger>
         )}
         <Link to="/" className="flex items-center space-x-2">
           <div className="bg-accent text-accent-foreground font-bold text-xl px-2 py-1 rounded">Estruturada</div>
