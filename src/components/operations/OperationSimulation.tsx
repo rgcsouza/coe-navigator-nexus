@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -119,11 +118,6 @@ const OperationSimulation = ({
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <OperationPayoffChart operationType={operation.type} />
-        <ClientContractsChart operation={operation} />
-      </div>
-
       <Card>
         <CardHeader>
           <CardTitle>Simulação de Estrutura</CardTitle>
@@ -146,6 +140,11 @@ const OperationSimulation = ({
           )}
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <OperationPayoffChart operationType={operation.type} />
+        <ClientContractsChart operation={operation} />
+      </div>
     </div>
   );
 };
