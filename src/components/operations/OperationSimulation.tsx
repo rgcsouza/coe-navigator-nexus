@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowDown, ArrowUp, ToggleLeft, FileCheck } from "lucide-react";
 import { Operation } from "@/types/operations";
+import OperationPayoffChart from "./OperationPayoffChart";
+import ClientContractsChart from "./ClientContractsChart";
 
 interface OperationSimulationProps {
   operation: Operation;
@@ -147,6 +149,11 @@ const OperationSimulation = ({
           </div>
         </CardContent>
       </Card>
+
+      <div className="grid md:grid-cols-2 gap-6 mb-6">
+        <OperationPayoffChart operationType={operation.type} />
+        <ClientContractsChart operation={operation} />
+      </div>
 
       <Card>
         <CardHeader>
