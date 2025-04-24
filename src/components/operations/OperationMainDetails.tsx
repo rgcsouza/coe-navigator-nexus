@@ -37,6 +37,10 @@ const OperationMainDetails = ({ operation }: OperationDetailsProps) => {
             <p className="text-sm text-muted-foreground">Ativo</p>
             <p className="font-medium">{operation.asset}</p>
           </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Rentabilidade Esperada</p>
+            <p className="font-medium">{operation.expectedReturn || 'N/A'}</p>
+          </div>
         </div>
         <div className="space-y-4">
           <div>
@@ -48,7 +52,7 @@ const OperationMainDetails = ({ operation }: OperationDetailsProps) => {
             <p className="font-medium">{operation.issuer}</p>
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Data de Criação</p>
+            <p className="text-sm text-muted-foreground">Data de Emissão</p>
             <p className="font-medium">{operation.date || 'N/A'}</p>
           </div>
           <div>

@@ -14,6 +14,7 @@ export interface Operation {
   maturityDate?: string;
   totalValue?: string;
   clientCount?: number;
+  expectedReturn?: string;
   clients?: Array<{
     name: string;
     cpf?: string;
