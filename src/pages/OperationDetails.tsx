@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { mockOperationDetails } from "@/data/mockOperationDetails";
 import { useOperation } from "@/hooks/useOperation";
@@ -22,6 +21,12 @@ const OperationDetails = () => {
     handleSendOperation,
     handleCancelOperation
   } = useOperation({ initialOperation: mockOperationDetails });
+
+  const handleStatusUpdate = (newStatus: string) => {
+    if (handleSendOperation) {
+      handleSendOperation();
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -51,9 +56,8 @@ const OperationDetails = () => {
         
         <TabsContent value="simulation">
           <OperationSimulation 
-            operationType={operation.type} 
-            asset={operation.asset}
-            protection={operation.protection}
+            operation={operation}
+            onStatusUpdate={handleStatusUpdate}
           />
         </TabsContent>
       </Tabs>

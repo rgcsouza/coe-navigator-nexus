@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,12 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowDown, ArrowUp, ToggleLeft } from "lucide-react";
+import { ArrowDown, ArrowUp, ToggleLeft, FileCheck } from "lucide-react";
+import { Operation } from "@/types/operations";
 
 interface OperationSimulationProps {
-  operationType: string;
-  asset: string;
-  protection?: string;
+  operation: Operation;
+  onStatusUpdate?: (newStatus: string) => void;
 }
 
 const simulationFormSchema = z.object({
@@ -34,9 +33,8 @@ interface SimulationResult {
 }
 
 const OperationSimulation = ({
-  operationType,
-  asset,
-  protection
+  operation,
+  onStatusUpdate
 }: OperationSimulationProps) => {
   const { toast } = useToast();
   const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null);
@@ -53,7 +51,6 @@ const OperationSimulation = ({
   });
 
   const onSubmit = (values: SimulationFormValues) => {
-    // Simple simulation calculation
     const entryPrice = parseFloat(values.entryPrice);
     const exitPrice = parseFloat(values.exitPrice);
     const quantity = parseFloat(values.quantity);
@@ -62,15 +59,12 @@ const OperationSimulation = ({
     const grossResult = (exitPrice - entryPrice) * quantity;
     const investmentValue = entryPrice * quantity;
     
-    // Calculate estimated return (simplified)
     let estimatedReturn = (grossResult / investmentValue) * 100;
     
-    // Add interest rate effect if provided
     if (interestRate > 0) {
       estimatedReturn += interestRate * 100;
     }
 
-    // Determine scenario
     let scenario: "positive" | "negative" | "neutral" = "neutral";
     if (estimatedReturn > 0) {
       scenario = "positive";
@@ -112,14 +106,53 @@ const OperationSimulation = ({
     }
   };
 
+  const handleEmitCertificate = () => {
+    if (onStatusUpdate) {
+      onStatusUpdate("Processado");
+    }
+    
+    toast({
+      title: "Certificado emitido",
+      description: "O certificado foi gerado com sucesso e a operação foi processada.",
+    });
+  };
+
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
+          <CardTitle>Detalhes da Operação</CardTitle>
+          <CardDescription>
+            {operation.name} - {operation.type}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <p className="text-sm">{operation.status}</p>
+            </div>
+            <div className="space-y-2">
+              <Label>Data de Emissão</Label>
+              <p className="text-sm">{operation.creationDate}</p>
+            </div>
+            <div className="space-y-2">
+              <Label>Data de Vencimento</Label>
+              <p className="text-sm">{operation.maturityDate}</p>
+            </div>
+            <div className="space-y-2">
+              <Label>Rentabilidade Esperada</Label>
+              <p className="text-sm">{operation.expectedReturn}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Simulação de Estrutura</CardTitle>
           <CardDescription>
-            Simule os resultados potenciais para esta estrutura {operationType} em {asset}
-            {protection && ` com proteção de ${protection}`}
+            Simule os resultados potenciais para esta estrutura {operation.type}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -178,7 +211,7 @@ const OperationSimulation = ({
                     </FormItem>
                   )}
                 />
-                {operationType.toLowerCase().includes("opção") && (
+                {operation.type.toLowerCase().includes("opção") && (
                   <FormField
                     control={form.control}
                     name="volatility"
@@ -199,8 +232,7 @@ const OperationSimulation = ({
           </Form>
 
           {simulationResult && (
-            <div className="mt-8 p-6 border rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Resultado da Simulação</h3>
+            <div className="mt-8 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="flex flex-col items-center p-4 border rounded-md">
                   <p className="text-sm text-muted-foreground mb-2">Resultado Bruto</p>
@@ -224,6 +256,16 @@ const OperationSimulation = ({
                     </span>
                   </div>
                 </div>
+              </div>
+              
+              <div className="flex justify-end mt-6">
+                <Button
+                  onClick={handleEmitCertificate}
+                  className="gap-2"
+                >
+                  <FileCheck className="h-4 w-4" />
+                  Emitir Certificado
+                </Button>
               </div>
             </div>
           )}
