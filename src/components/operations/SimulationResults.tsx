@@ -1,15 +1,15 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { SimulationResult } from "@/hooks/useSimulationForm";
-import { ArrowDown, ArrowUp, ToggleLeft, FileCheck } from "lucide-react";
+import { ArrowDown, ArrowUp, ToggleLeft, FileCheck, Printer } from "lucide-react";
 
 interface SimulationResultsProps {
   result: SimulationResult;
   onEmitCertificate: () => void;
+  onPrint: () => void;
 }
 
-const SimulationResults = ({ result, onEmitCertificate }: SimulationResultsProps) => {
+const SimulationResults = ({ result, onEmitCertificate, onPrint }: SimulationResultsProps) => {
   const getScenarioColor = (scenario: string): string => {
     switch (scenario) {
       case "positive":
@@ -59,10 +59,14 @@ const SimulationResults = ({ result, onEmitCertificate }: SimulationResultsProps
         </div>
       </div>
       
-      <div className="flex justify-end mt-6">
-        <Button onClick={onEmitCertificate} className="gap-2">
+      <div className="flex justify-end gap-4">
+        <Button onClick={onEmitCertificate} variant="secondary" className="gap-2">
           <FileCheck className="h-4 w-4" />
           Emitir Certificado
+        </Button>
+        <Button onClick={onPrint} variant="outline" className="gap-2">
+          <Printer className="h-4 w-4" />
+          Imprimir
         </Button>
       </div>
     </div>

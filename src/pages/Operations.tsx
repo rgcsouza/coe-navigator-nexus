@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -12,6 +11,14 @@ import { OperationsHeader } from "@/components/operations/OperationsHeader";
 import { OperationsTable } from "@/components/operations/OperationsTable";
 import { useOperationsSort } from "@/hooks/useOperationsSort";
 import { getOfferTypeLabel, getOfferTypeStyles, Operation } from "@/types/operations";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const mockOperations: Operation[] = [
   { 
@@ -79,12 +86,59 @@ const mockOperations: Operation[] = [
     value: "R$ 1.500.000,00",
     protection: "98%" 
   },
+  { 
+    id: "COE-2023-04-10", 
+    type: "Autocall Phoenix", 
+    asset: "PETR4", 
+    issuer: "Banco XYZ", 
+    status: "Pendente", 
+    offerType: "d0",
+    date: "2023-04-10", 
+    value: "R$ 2.000.000,00",
+    protection: "92%" 
+  },
+  { 
+    id: "COE-2023-04-05", 
+    type: "Digital", 
+    asset: "Vale3", 
+    issuer: "Banco ABC", 
+    status: "Precificação", 
+    offerType: "24x7",
+    date: "2023-04-05", 
+    value: "R$ 800.000,00",
+    protection: "100%" 
+  },
+  { 
+    id: "COE-2023-04-01", 
+    type: "Call Spread", 
+    asset: "IBOVESPA", 
+    issuer: "Banco DEF", 
+    status: "Certificado Solicitado", 
+    offerType: "agendado",
+    date: "2023-04-01", 
+    value: "R$ 1.800.000,00",
+    protection: "95%" 
+  },
+  { 
+    id: "COE-2023-03-28", 
+    type: "Barrier Reverse", 
+    asset: "ITUB4", 
+    issuer: "Banco XYZ", 
+    status: "Emitido", 
+    offerType: "d0",
+    date: "2023-03-28", 
+    value: "R$ 950.000,00",
+    protection: "90%" 
+  }
 ];
+
+const ITEMS_PER_PAGE = 5;
 
 const Operations = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState("desc");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSort = (field: string) => {
     if (sortField === field) {
@@ -104,6 +158,21 @@ const Operations = () => {
 
   const sortedOperations = useOperationsSort(filteredOperations, sortField, sortDirection);
   
+  const totalPages = Math.ceil(sortedOperations.length / ITEMS_PER_PAGE);
+  const paginatedOperations = sortedOperations.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const activeOperations = sortedOperations.filter(op => 
+    ["Pendente", "Precificação", "Certificado Solicitado"].includes(op.status)
+  );
+
+  const paginatedActiveOperations = activeOperations.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
     <div className="space-y-6">
       <div>
@@ -138,16 +207,41 @@ const Operations = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <OperationsTable 
-                  operations={sortedOperations}
+                  operations={paginatedOperations}
                   sortField={sortField}
                   sortDirection={sortDirection}
                   onSort={handleSort}
                   getOfferTypeLabel={getOfferTypeLabel}
                   getOfferTypeStyles={getOfferTypeStyles}
                 />
-                {sortedOperations.length === 0 && (
-                  <div className="py-8 text-center text-muted-foreground">
-                    Nenhuma operação encontrada para os filtros aplicados
+                {sortedOperations.length > ITEMS_PER_PAGE && (
+                  <div className="py-4 flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious 
+                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(page)}
+                              isActive={currentPage === page}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                          <PaginationNext 
+                            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
                   </div>
                 )}
               </div>
@@ -163,9 +257,51 @@ const Operations = () => {
                 Operações que ainda não foram finalizadas
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-8 text-muted-foreground">
-                Não há operações em andamento no momento
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <OperationsTable 
+                  operations={paginatedActiveOperations}
+                  sortField={sortField}
+                  sortDirection={sortDirection}
+                  onSort={handleSort}
+                  getOfferTypeLabel={getOfferTypeLabel}
+                  getOfferTypeStyles={getOfferTypeStyles}
+                />
+                {activeOperations.length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Não há operações em andamento no momento
+                  </div>
+                )}
+                {activeOperations.length > ITEMS_PER_PAGE && (
+                  <div className="py-4 flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious 
+                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(page)}
+                              isActive={currentPage === page}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                          <PaginationNext 
+                            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

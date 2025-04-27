@@ -13,6 +13,17 @@ interface SimulationFormProps {
 }
 
 const SimulationForm = ({ form, operationType, onSubmit }: SimulationFormProps) => {
+  React.useEffect(() => {
+    // Pre-fill example values
+    form.reset({
+      entryPrice: "100.00",
+      exitPrice: "110.00",
+      quantity: "1000",
+      interestRate: "5.5",
+      volatility: operationType.toLowerCase().includes('opção') ? "25.0" : undefined
+    });
+  }, [form, operationType]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -85,7 +96,11 @@ const SimulationForm = ({ form, operationType, onSubmit }: SimulationFormProps) 
             />
           )}
         </div>
-        <Button type="submit" className="mt-4">Calcular Simulação</Button>
+        <div className="flex justify-end gap-4">
+          <Button type="submit" className="gap-2">
+            Calcular Simulação
+          </Button>
+        </div>
       </form>
     </Form>
   );
