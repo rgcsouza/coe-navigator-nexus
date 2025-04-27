@@ -15,7 +15,7 @@ const Index = () => {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="text-primary">Estruturada</span> Captação <span className="text-accent">Nexus</span>
+            <span className="text-primary">Estruturada</span> Captação <span className="text-accent">Emissão</span>
           </h1>
           
           <p className="text-lg md:text-xl mb-8 text-muted-foreground">
@@ -99,7 +99,7 @@ const Index = () => {
             <div className="mb-4 md:mb-0">
               <div className="flex items-center">
                 <span className="text-lg font-bold text-primary mr-2">Estruturada</span>
-                <span className="text-sm">Captação Nexus</span>
+                <span className="text-sm">Captação Emissão</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 © {new Date().getFullYear()} Sistema para negociação e gestão de Estruturada
