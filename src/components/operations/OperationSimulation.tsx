@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -136,6 +137,7 @@ const OperationSimulation = ({
             <SimulationResults
               result={simulationResult}
               onEmitCertificate={handleEmitCertificate}
+              onPrint={handlePrint}
             />
           )}
         </CardContent>
